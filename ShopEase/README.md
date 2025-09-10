@@ -1,0 +1,1 @@
+#ShopEase CI/CD pipeline 
