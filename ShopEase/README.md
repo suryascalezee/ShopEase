@@ -1,1 +1,1 @@
-#ShopEase CI/CD pipeline 
+#ShopEase Jenkins pipeline 
