@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopease-deployment
+  labels:
+    app: shopease
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: shopease
+  template:
+    metadata:
+      labels:
+        app: shopease
+    spec:
+      containers:
+        - name: shopease
+          image: suryascalezee/shopease:latest   # GitHub Actions updates this
+          ports:
+            - containerPort: 8000
