@@ -33,3 +33,4 @@ jobs:
           context: .
           push: true
           tags: suryascalezee/shopease:se_v1.0.0
+        
