@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Verify secrets
+      # Step 2: Safe debug to verify secrets exist
+      - name: Verify secrets safely
         run: |
+          echo "Checking DOCKER_USERNAME..."
           if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
             echo "❌ DOCKER_USERNAME is missing"
             exit 1
@@ -23,6 +26,7 @@ jobs:
             echo "✅ DOCKER_USERNAME is set"
           fi
 
+          echo "Checking DOCKER_PASSWORD..."
           if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
             echo "❌ DOCKER_PASSWORD is missing"
             exit 1
@@ -30,20 +34,24 @@ jobs:
             echo "✅ DOCKER_PASSWORD is set"
           fi
 
+      # Step 3: Login to DockerHub using secrets
       - name: Log in to DockerHub
         run: |
           echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
+      # Step 4: Setup Docker image tags
       - name: Set up tags
         run: |
           echo "IMAGE=suryascalezee/shopease" >> $GITHUB_ENV
           echo "TAG_SHA=${GITHUB_SHA::7}" >> $GITHUB_ENV
           echo "TAG_LATEST=latest" >> $GITHUB_ENV
 
+      # Step 5: Build Docker image
       - name: Build Docker image
         run: |
           docker build -t $IMAGE:$TAG_LATEST -t $IMAGE:$TAG_SHA .
 
+      # Step 6: Push Docker image
       - name: Push Docker image
         run: |
           docker push $IMAGE:$TAG_LATEST
