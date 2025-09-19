@@ -2,10 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shopease
-  labels:
-    app: shopease
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: shopease
@@ -16,8 +14,8 @@ spec:
     spec:
       containers:
         - name: shopease
-          image: python:3.10-slim   # ✅ use base Python image instead of DockerHub
-          command: ["python"]
-          args: ["app/main.py"]     # ✅ run your app directly
+          image: shopease:latest
           ports:
             - containerPort: 8000
+          # 👇 Add this line (workflow updates it automatically)
+          version: "v1.0.0"
