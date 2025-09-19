@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shopease-deployment
+  name: shopease
   labels:
     app: shopease
 spec:
@@ -16,6 +16,8 @@ spec:
     spec:
       containers:
         - name: shopease
-          image: suryascalezee/shopease:latest   # GitHub Actions updates this
+          image: python:3.10-slim   # ✅ use base Python image instead of DockerHub
+          command: ["python"]
+          args: ["app/main.py"]     # ✅ run your app directly
           ports:
             - containerPort: 8000
