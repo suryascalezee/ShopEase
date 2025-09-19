@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI Pipeline (No Docker)
 
 on:
   push:
@@ -27,18 +27,4 @@ jobs:
       - name: Run tests
         run: |
           echo "No tests yet, skipping..."
-          # pytest  # uncomment when you add tests
-
-      - name: Log in to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/shopease:latest .
-
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/shopease:latest
+          # pytest  # enable when you add tests
