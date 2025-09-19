@@ -32,7 +32,7 @@ jobs:
 
       # Step 5: Create artifact (zip app folder)
       - name: Create artifact
-        run: zip -r shop-ease-build.zip app/
+        run: zip -r shop-ease-build.zip app
 
       # Step 6: Upload artifact to GitHub
       - name: Upload artifact
