@@ -1,30 +1,80 @@
-name: CI Pipeline (No Docker)
+name: ShopEase CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      # Step 1: Checkout source code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Setup Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: "3.11"
 
+      # Step 3: Install dependencies (requirements.txt is inside app/)
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r app/requirements.txt
 
+      # Step 4: Run tests (skip if none exist)
       - name: Run tests
         run: |
-          echo "No tests yet, skipping..."
-          # pytest  # enable when you add tests
+          echo "✅ No tests found, skipping pytest"
+          # pytest tests/
+
+      # Step 5: Create artifact (zip app folder)
+      - name: Create artifact
+        run: zip -r shop-ease-build.zip app/
+
+      # Step 6: Upload artifact to GitHub
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: shop-ease-artifact
+          path: shop-ease-build.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Checkout repo again
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      # Step 2: Bump version in Kubernetes manifest
+      - name: Update deployment.yaml version
+        run: |
+          VERSION=$(date +%s) # unique version using timestamp
+          echo "Deploying version $VERSION"
+          sed -i "s|version:.*|version: \"$VERSION\"|g" k8s/deployment.yaml
+          echo "Updated k8s/deployment.yaml with version $VERSION"
+
+      # Step 3: Commit & push manifest change
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "ShopEase CI"
+          git config --global user.email "suryaprabha.n@scalezee.com"
+          git add k8s/deployment.yaml
+          git commit -m "CI/CD: Deploy version $(date +%s)" || echo "No changes to commit"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      # Step 4: Trigger ArgoCD Sync
+      - name: Trigger ArgoCD Sync
+        run: |
+          curl -k -X POST \
+          -H "Authorization: Bearer $ARGOCD_AUTH_TOKEN" \
+          "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync"
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+          ARGOCD_APP: ${{ secrets.ARGOCD_APP }}
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
