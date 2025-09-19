@@ -6,11 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/suryascalezee/ShopEase.git   # your repo
+    repoURL: 'https://github.com/suryascalezee/ShopEase'
     targetRevision: main
     path: k8s
   destination:
-    server: https://kubernetes.default.svc
+    server: 'https://kubernetes.default.svc'
     namespace: default
   syncPolicy:
     automated:
