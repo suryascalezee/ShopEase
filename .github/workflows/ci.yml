@@ -19,10 +19,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      # Step 3: Install dependencies (requirements.txt inside app/)
+      # Step 3: Install dependencies (requirements.txt)
       - name: Install dependencies
         run: |
-          pip install -r app/requirements.txt
+          pip install -r requirements.txt
 
       # Step 4: Run tests (skip if none exist)
       - name: Run tests
