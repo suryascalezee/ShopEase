@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shopease
+  name: shopease-deployment
 spec:
   replicas: 1
   selector:
@@ -13,9 +13,7 @@ spec:
         app: shopease
     spec:
       containers:
-        - name: shopease
-          image: shopease:latest
-          ports:
-            - containerPort: 8000
-          # 👇 Add this line (workflow updates it automatically)
-          version: "v1.0.0"
+      - name: shopease
+        image: ghcr.io/suryascalezee/shopease:latest
+        ports:
+        - containerPort: 8000
