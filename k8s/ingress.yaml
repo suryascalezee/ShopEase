@@ -2,9 +2,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: shopease-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
   rules:
-    - host: shopease.local   # Replace with your domain
+    - host: shopease.local
       http:
         paths:
           - path: /
