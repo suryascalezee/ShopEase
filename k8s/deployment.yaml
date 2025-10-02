@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: shopease-deployment
+  labels:
+    app: shopease
 spec:
   replicas: 1
   selector:
@@ -13,7 +15,8 @@ spec:
         app: shopease
     spec:
       containers:
-      - name: shopease
-        image: ghcr.io/suryascalezee/shopease:latest
-        ports:
-        - containerPort: 8000
+        - name: shopease
+          image: <REGISTRY>/suryascalezee/shopease:latest
+          ports:
+            - containerPort: 80
+          resources: {}
