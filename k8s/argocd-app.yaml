@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/suryascalezee/ShopEase'
+    repoURL: 'https://github.com/suryascalezee/shopease'
     targetRevision: main
     path: k8s
   destination:
