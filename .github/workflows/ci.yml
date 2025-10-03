@@ -30,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          tags: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:v1.0.0
           file: ./Dockerfile
           context: .
 
