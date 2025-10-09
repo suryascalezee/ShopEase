@@ -1,3 +1,3 @@
 image:
-  repository: docker.io/YOUR_USERNAME/shopease
+  repository: docker.io/suryascalezee/shopease
   tag: v1.0.2
