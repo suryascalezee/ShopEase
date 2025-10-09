@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: shopease
-          image: docker.io/suryascalezee/shopease:63bb5e2e7e84a8c137c3a647d70a1a83f27b6937
+          image: docker.io/suryascalezee/shopease:9894e34e24edd14b0e6d26a7122d70130d264892
           ports:
             - containerPort: 80
           resources: {}
