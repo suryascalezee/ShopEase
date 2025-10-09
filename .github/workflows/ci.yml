@@ -16,16 +16,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install yq
-        run: |
-          sudo wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O /usr/bin/yq
-          sudo chmod +x /usr/bin/yq
+     - name: Install yq
+  run: |
+    sudo wget https://github.com/mikefarah/yq/releases/download/v4.40.5/yq_linux_amd64 -O /usr/bin/yq
+    sudo chmod +x /usr/bin/yq
 
-      - name: Read image tag from values.yaml
-        id: read_tag
-        run: |
-          IMAGE_TAG=$(yq '.image.tag' values.yaml)
-          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_OUTPUT
+- name: Read image tag from values.yaml
+  id: read_tag
+  run: |
+    IMAGE_TAG=$(yq '.image.tag' values.yaml)
+    echo "IMAGE_TAG=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
